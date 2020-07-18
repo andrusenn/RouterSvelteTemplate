@@ -1,17 +1,17 @@
 <script>
-  import { RouterStore } from "./routerStore";
-  import { onMount } from "svelte";
-  export let name;
-  export let part = "";
-  $: {
-    if ($RouterStore) {
-      $RouterStore.start();
-    }
+  import { Router } from "./routerStore";
+  export let name,
+    part = "";
+  function start(node) {
+    $Router.start();
+    return {
+      destroy() {}
+    };
   }
 </script>
 
-{#if $RouterStore}
-  <a href={$RouterStore.getPath(name) + part} router>
+{#if $Router}
+  <a href={$Router.getPath(name) + part} use:start router>
     <slot />
   </a>
 {/if}

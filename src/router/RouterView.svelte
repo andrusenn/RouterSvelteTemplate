@@ -1,7 +1,7 @@
 <script>
   import RouterClass from "./RouterClass";
   import RouterLink from "./RouterLink.svelte";
-  import { RouterStore } from "./routerStore";
+  import { Router as RouterStore } from "./routerStore";
   import { onMount } from "svelte";
 
   // Components
@@ -21,7 +21,6 @@
       },
       ...callbacks
     });
-    routerClass.start();
     component = routerClass.component;
     Router = routerClass;
     $RouterStore = routerClass;
