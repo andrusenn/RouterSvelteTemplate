@@ -1,6 +1,6 @@
 {
-    "name": "router-svelte",
-    "version": "1.0.0",
+    "name": "routed-svelte",
+    "version": "0.1.0",
     "scripts": {
         "build": "rollup -c",
         "dev": "rollup -c -w",
