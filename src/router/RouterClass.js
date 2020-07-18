@@ -1,21 +1,5 @@
 class RouterClass {
     constructor(routes, _config) {
-        /* APACHE SERVER
-<IfModule mod_rewrite.c>
-# replace basepath with yours
-RewriteEngine On
-
-# remove trail slash
-RewriteRule ^(.*)/$ basePath/$1 [L,R=301]
-
-RewriteBase /
-RewriteRule ^index\.html$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /basePath/index.html [L]
-
-</IfModule>
-*/
         this.config = {
             basePath: "",
             init: null,
@@ -40,6 +24,7 @@ RewriteRule . /basePath/index.html [L]
         this.pathIndex = -1;
         this.path = document.location.pathname.replace(this.base, "");
         this.component = null;
+
         // Capture hash
         if (document.location.hash !== "") {
             this.hash = document.location.hash;
@@ -53,14 +38,7 @@ RewriteRule . /basePath/index.html [L]
         // Paths ---------------------------------
         for (let i = 0; i < this._routes.length; i++) {
             let route = this._routes[i];
-            // if (
-            //     this._routes[i].hasOwnProperty("alias") &&
-            //     this._routes[i].alias !== null
-            // ) {
-            //     this.paths.push(route.alias);
-            // } else {
             this.paths.push(route.path);
-            // }
         }
 
         // Fallback -> create if not exists
@@ -93,9 +71,13 @@ RewriteRule . /basePath/index.html [L]
         }
 
         // meta
-        if (this._routes[this.pathIndex].hasOwnProperty("meta")) {
+        if (
+            this._routes[this.pathIndex] &&
+            this._routes[this.pathIndex].hasOwnProperty("meta")
+        ) {
             this.meta = this._routes[this.pathIndex].meta;
         }
+
         // do the do
         if (this._routes[this.pathIndex]) {
             if (this._routes[this.pathIndex].hasOwnProperty("do")) {
@@ -158,13 +140,6 @@ RewriteRule . /basePath/index.html [L]
         // Click events
         for (let i = 0; i < aLinks.length; i++) {
             aLinks[i].removeAttribute("onclick");
-            let vattr = aLinks[i].getAttribute("router");
-            if (vattr !== "") {
-                let index = this.paths.indexOf(this.getPath(vattr));
-                if (index !== -1) {
-                    aLinks[i].href = this._routes[index].path;
-                }
-            }
             aLinks[i].onclick = (e) => {
                 e.preventDefault();
                 if (new URL(e.target.href).pathname === this.path) {
