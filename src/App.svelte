@@ -1,8 +1,10 @@
 <script>
-  import { RouterLink, RouterView, RouterStore } from "./router/Router";
+  import { RouterLink, RouterView, Router } from "./router/Router";
+  // Get params / meta / search / hash
   $: {
-    if ($RouterStore) {
-      console.log($RouterStore.params);
+    if ($Router) {
+      let rs = $Router;
+      console.log(rs.params, rs.meta, rs.search, rs.hash);
     }
   }
 </script>
