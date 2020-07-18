@@ -1,6 +1,7 @@
 # Routing components for Svelte
 
-This is a personal solution for routing in svelte.
+This is a personal solution for routing in svelte used in my projects.
+Maybe there are more and betters solutions outhere.
 
 ## Usage
 
@@ -29,8 +30,16 @@ Config routes (Array[objects]).
 |   `name` | _[required]_ name of the route                                                                                |
 |     `do` | function callback `do:function(data){}`                                                                       |
 | `params` | Dynamic parameters. Capture each part of defined parameter. `params:{param1:'',param2:''}` param1/param2/etc` |
-|   `meta` | function callback `do:function(data){}`                                                                       |
+|   `meta` | Custom data `{foo:bar}`                                                                                       |
 |  `title` | page title `<title></title>`                                                                                  |
+
+|             configs | Description                                  |
+| ------------------: | -------------------------------------------- |
+|          `basePath` | Base root path                               |
+|            `init()` | First load                                   |
+| `update(component)` | Callback on update component                 |
+|          `before()` | Middleware function -> `next()` must be used |
+|           `after()` | Callback after routed                        |
 
 ```js
 // routes.js
@@ -52,6 +61,10 @@ let routes = [
     {
         path: "/about",
         name: "about",
+        do: function(data){
+            // Do something
+            console.log(data);
+        },
         // dynamic parameters
         // if it's defined, return valid route -> /about/param1
         params:{
@@ -69,17 +82,28 @@ let routes = [
     },
 ];
 let callbacks = {
+    // Base url path
+    basePath: "",
+
+    // On update route
+    update: (component) => {
+        //
+    },
+
     init: () => {
         //
     },
-    // middleware
+
+    // middleware / before routing
     before: (next) => {
         //let to = setTimeout(() => {
             next();
             //clearTimeout(to);
         //}, 500);
     },
-    after: (next) => {
+
+    // After routing
+    after: () => {
         //
     },
 };
@@ -90,7 +114,7 @@ export { routes, callbacks };
 
 ```html
 <script>
-    import { RouterLink, RouterView, RouterStore } from "./router/Router";
+    import { RouterLink, RouterView, Router } from "./router/Router";
 </script>
 
 <main>
@@ -119,4 +143,36 @@ Example:
 <div>
     <RouterLink name="about" part="?x=0#myhash">About</RouterLink>
 </div>
+```
+
+### Programmatically route
+
+`Router.navigateTo('/path')`
+
+```html
+// AnyRoutedComponent.svelte
+<script>
+    export let RouterLink, Router;
+    Router.navigateTo("/about");
+</script>
+```
+
+### Apache server SPA
+
+```text
+
+<IfModule mod_rewrite.c>
+# replace basepath with yours
+RewriteEngine On
+
+# remove trail slash
+RewriteRule ^(.*)/$ basePath/$1 [L,R=301]
+
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /basePath/index.html [L]
+
+</IfModule>
 ```
