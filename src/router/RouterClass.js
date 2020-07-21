@@ -128,7 +128,7 @@ class RouterClass {
         // History
         window.addEventListener("popstate", (e) => {
             if (typeof this.config.before === "function") {
-                this.middleware(e, this.config.before, this.backTo);
+                this.middleware(e, null, this.config.before, this.backTo);
             } else {
                 this.backTo(e);
             }
@@ -140,20 +140,21 @@ class RouterClass {
         // Click events
         for (let i = 0; i < aLinks.length; i++) {
             aLinks[i].removeAttribute("onclick");
-            aLinks[i].onclick = (e) => {
+            let self = this;
+            aLinks[i].onclick = function (e) {
                 e.preventDefault();
-                if (new URL(e.target.href).pathname === this.path) {
+                if (new URL(this.href).pathname === self.path) {
                     return false;
                 }
 
-                if (typeof this.config.before === "function") {
-                    this.middleware(e, this.config.before, this.routeTo);
+                if (typeof self.config.before === "function") {
+                    self.middleware(e, this, self.config.before, self.routeTo);
                 } else {
-                    this.routeTo(e);
+                    self.routeTo(e, this);
                 }
 
-                if (typeof this.config.after === "function") {
-                    this.config.after();
+                if (typeof self.config.after === "function") {
+                    self.config.after();
                 }
                 return false;
             };
@@ -381,19 +382,19 @@ class RouterClass {
         this.config.update(this.component);
     }
     // middleware
-    middleware(e, fn, exec) {
+    middleware(e, a, fn, exec) {
         let _exec = exec.bind(this);
         let next = function () {
-            _exec(e);
+            _exec(e, a);
         }.bind(_exec);
         fn(next);
     }
     // Action
-    routeTo(e) {
+    routeTo(e, a) {
         this.title = "";
-        this.search = new URL(e.target.href).search;
-        this.hash = new URL(e.target.href).hash;
-        this.path = new URL(e.target.href).pathname;
+        this.search = new URL(a.href).search;
+        this.hash = new URL(a.href).hash;
+        this.path = new URL(a.href).pathname;
         this.meta = {};
         // Index of path in paths
         this.pathIndex = this.getRealPathIndex();
