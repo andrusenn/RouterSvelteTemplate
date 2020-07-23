@@ -125,7 +125,16 @@ export { routes, fns };
 
 ### Availables props
 
-`<RouterLink name="home" title="mytitle" cssClass="classes" cssStyle="styles" part="?x=0#myhash">Home</RouterLink>`
+```html
+<RouterLink
+    name="home"
+    title="mytitle"
+    cssClass="classes"
+    cssStyle="styles"
+    part="?x=0#myhash"
+    >Home</RouterLink
+>
+```
 
 ### Routing the components
 
