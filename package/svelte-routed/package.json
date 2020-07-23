@@ -1,0 +1,26 @@
+{
+    "name": "svelte-routed",
+    "version": "0.1.0-beta",
+    "description": "Svelte routing",
+    "main": "src/index.js",
+    "svelte": "src/index.js",
+    "peerDependencies": {
+        "svelte": "3.x"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/andrusenn/RouterSvelteTemplate.git"
+    },
+    "keywords": [
+        "svelte",
+        "router",
+        "routing",
+        "spa"
+    ],
+    "author": "andrusenn",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/andrusenn/RouterSvelteTemplate/issues"
+    },
+    "homepage": "https://github.com/andrusenn/RouterSvelteTemplate#readme"
+}
