@@ -1,3 +1,5 @@
-export { Router } from "./Router.js";
-export { default as RouterLink } from "./RouterLink.svelte";
-export { default as RouterView } from "./RouterView.svelte";
+import RouterLink from "./RouterLink.svelte";
+import RouterView from "./RouterView.svelte";
+import { Router } from "./routerStore.js";
+
+export { RouterLink, RouterView, Router };
