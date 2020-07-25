@@ -136,6 +136,7 @@ export { routes, fns };
     cssClass="classes"
     cssStyle="styles"
     part="?x=0#myhash"
+    path="/"
     >Home</RouterLink
 >
 ```
