@@ -1,5 +1,5 @@
 {
-    "name": "routed-svelte",
+    "name": "routed-svelte-template",
     "version": "0.1.0",
     "scripts": {
         "build": "rollup -c",
@@ -17,6 +17,7 @@
         "svelte": "^3.24.0"
     },
     "dependencies": {
-        "sirv-cli": "^0.4.4"
+        "sirv-cli": "^0.4.4",
+        "svelte-routed": "0.2.0-beta"
     }
 }

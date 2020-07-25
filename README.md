@@ -3,22 +3,13 @@
 This is a personal solution for routing in svelte used in my projects.
 Maybe there are more and betters solutions outhere.
 
-## Usage
+## Demo template
 
-```text
-src/
-   router/
-       Router.js
-       RouterClass.js
-       RouterLink.svelte
-       routerStore.js
-       RouterView.svelte
-       routes.js
-    views/
-       About.svelte
-       Home.svelte
-  App.svelte
-```
+Clone demo template:
+
+1. `npx degit andrusenn/RouterSvelteTemplate/template template`
+2. `npm install`
+3. `npm run dev` or `npm run start`
 
 ### routes.js
 

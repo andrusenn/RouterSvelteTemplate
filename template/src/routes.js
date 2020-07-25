@@ -1,7 +1,7 @@
 // Components
-import Home from "../views/Home.svelte";
-import About from "../views/About.svelte";
-import NotFound from "../views/NotFound.svelte";
+import Home from "./views/Home.svelte";
+import About from "./views/About.svelte";
+import NotFound from "./views/NotFound.svelte";
 
 // Vars
 let routes = [
@@ -10,7 +10,8 @@ let routes = [
         path: "/",
         name: "home",
         params: {
-            p1: "",
+            param1: "",
+            param2: "",
         },
         component: Home,
         title: "Home",
@@ -18,6 +19,9 @@ let routes = [
     {
         path: "/about",
         name: "about",
+        params: {
+            param1: "",
+        },
         component: About,
         title: "About",
     },
@@ -27,7 +31,7 @@ let routes = [
         title: "404",
     },
 ];
-let callbacks = {
+let fns = {
     init: () => {
         window.scrollTo(0, 0);
     },
@@ -38,4 +42,4 @@ let callbacks = {
         //}, 500);
     },
 };
-export { routes, callbacks };
+export { routes, fns };

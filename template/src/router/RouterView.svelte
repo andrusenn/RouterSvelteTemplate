@@ -4,22 +4,20 @@
   import { Router as RouterStore } from "./routerStore";
   import { onMount } from "svelte";
 
-  // Components
-  import { routes, callbacks } from "./routes";
+  export let use = { routes: [], fns: {} };
 
-  // Vars
   let routerClass = null;
   let component = null;
   let Router = null;
-  // Mount
+
   onMount(() => {
-    routerClass = new RouterClass(routes, {
+    routerClass = new RouterClass(use.routes, {
       update: c => {
         component = c;
         Router = routerClass;
         $RouterStore = routerClass;
       },
-      ...callbacks
+      ...use.fns
     });
     component = routerClass.component;
     Router = routerClass;
