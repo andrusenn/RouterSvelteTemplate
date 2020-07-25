@@ -385,19 +385,18 @@ const Router = writable(null);
 
 function create_if_block(ctx) {
 	let a;
-	let a_href_value;
 	let start_action;
 	let current;
 	let mounted;
 	let dispose;
-	const default_slot_template = /*$$slots*/ ctx[9].default;
-	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[8], null);
+	const default_slot_template = /*$$slots*/ ctx[10].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[9], null);
 
 	return {
 		c() {
 			a = element("a");
 			if (default_slot) default_slot.c();
-			attr(a, "href", a_href_value = /*$Router*/ ctx[6].getPath(/*name*/ ctx[0]) + /*part*/ ctx[5]);
+			attr(a, "href", /*path*/ ctx[0]);
 			attr(a, "class", /*cssClass*/ ctx[1]);
 			attr(a, "style", /*cssStyle*/ ctx[2]);
 			attr(a, "title", /*title*/ ctx[3]);
@@ -414,19 +413,19 @@ function create_if_block(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = action_destroyer(start_action = /*start*/ ctx[7].call(null, a));
+				dispose = action_destroyer(start_action = /*start*/ ctx[6].call(null, a));
 				mounted = true;
 			}
 		},
 		p(ctx, dirty) {
 			if (default_slot) {
-				if (default_slot.p && dirty & /*$$scope*/ 256) {
-					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[8], dirty, null, null);
+				if (default_slot.p && dirty & /*$$scope*/ 512) {
+					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[9], dirty, null, null);
 				}
 			}
 
-			if (!current || dirty & /*$Router, name, part*/ 97 && a_href_value !== (a_href_value = /*$Router*/ ctx[6].getPath(/*name*/ ctx[0]) + /*part*/ ctx[5])) {
-				attr(a, "href", a_href_value);
+			if (!current || dirty & /*path*/ 1) {
+				attr(a, "href", /*path*/ ctx[0]);
 			}
 
 			if (!current || dirty & /*cssClass*/ 2) {
@@ -466,7 +465,7 @@ function create_if_block(ctx) {
 function create_fragment(ctx) {
 	let if_block_anchor;
 	let current;
-	let if_block = /*$Router*/ ctx[6] && create_if_block(ctx);
+	let if_block = /*$Router*/ ctx[5] && create_if_block(ctx);
 
 	return {
 		c() {
@@ -479,11 +478,11 @@ function create_fragment(ctx) {
 			current = true;
 		},
 		p(ctx, [dirty]) {
-			if (/*$Router*/ ctx[6]) {
+			if (/*$Router*/ ctx[5]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*$Router*/ 64) {
+					if (dirty & /*$Router*/ 32) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -520,12 +519,13 @@ function create_fragment(ctx) {
 
 function instance($$self, $$props, $$invalidate) {
 	let $Router;
-	component_subscribe($$self, Router, $$value => $$invalidate(6, $Router = $$value));
+	component_subscribe($$self, Router, $$value => $$invalidate(5, $Router = $$value));
 
 	let { name } = $$props,
 		{ cssClass } = $$props,
 		{ cssStyle } = $$props,
 		{ title } = $$props,
+		{ path } = $$props,
 		{ role = "link" } = $$props,
 		{ part = "" } = $$props;
 
@@ -542,16 +542,39 @@ function instance($$self, $$props, $$invalidate) {
 	let { $$slots = {}, $$scope } = $$props;
 
 	$$self.$set = $$props => {
-		if ("name" in $$props) $$invalidate(0, name = $$props.name);
+		if ("name" in $$props) $$invalidate(7, name = $$props.name);
 		if ("cssClass" in $$props) $$invalidate(1, cssClass = $$props.cssClass);
 		if ("cssStyle" in $$props) $$invalidate(2, cssStyle = $$props.cssStyle);
 		if ("title" in $$props) $$invalidate(3, title = $$props.title);
+		if ("path" in $$props) $$invalidate(0, path = $$props.path);
 		if ("role" in $$props) $$invalidate(4, role = $$props.role);
-		if ("part" in $$props) $$invalidate(5, part = $$props.part);
-		if ("$$scope" in $$props) $$invalidate(8, $$scope = $$props.$$scope);
+		if ("part" in $$props) $$invalidate(8, part = $$props.part);
+		if ("$$scope" in $$props) $$invalidate(9, $$scope = $$props.$$scope);
 	};
 
-	return [name, cssClass, cssStyle, title, role, part, $Router, start, $$scope, $$slots];
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*$Router, name, part*/ 416) {
+			 if ($Router) {
+				if (name) {
+					$$invalidate(0, path = $Router.getPath(name) + part);
+				}
+			}
+		}
+	};
+
+	return [
+		path,
+		cssClass,
+		cssStyle,
+		title,
+		role,
+		$Router,
+		start,
+		name,
+		part,
+		$$scope,
+		$$slots
+	];
 }
 
 class RouterLink extends SvelteComponent {
@@ -559,12 +582,13 @@ class RouterLink extends SvelteComponent {
 		super();
 
 		init(this, options, instance, create_fragment, safe_not_equal, {
-			name: 0,
+			name: 7,
 			cssClass: 1,
 			cssStyle: 2,
 			title: 3,
+			path: 0,
 			role: 4,
-			part: 5
+			part: 8
 		});
 	}
 }

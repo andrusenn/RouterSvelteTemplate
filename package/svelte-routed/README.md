@@ -2,9 +2,13 @@
 
 This is a personal solution for routing in svelte used in my projects.
 
-## Install
+## Demo template
 
-`npm i svelte-routed`
+Clone demo template:
+
+1. `npx degit andrusenn/RouterSvelteTemplate/template template`
+2. `npm install`
+3. `npm run dev` or `npm run start`
 
 ### routes.js
 
