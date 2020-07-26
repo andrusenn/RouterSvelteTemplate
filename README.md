@@ -8,8 +8,9 @@ Maybe there are more and betters solutions outhere.
 Clone demo template:
 
 1. `npx degit andrusenn/RouterSvelteTemplate/template template`
-2. `npm install`
-3. `npm run dev` or `npm run start`
+2. `cd template`
+3. `npm install`
+4. `npm run dev` or `npm run start`
 
 ### routes.js
 
@@ -105,7 +106,10 @@ export { routes, callbacks };
 
 ```html
 <script>
-    import { RouterLink, RouterView, Router } from "./router/Router";
+    // Import components
+    import { RouterLink, RouterView } from "svelte-routed";
+    // Import my routes
+    import * as routes from "./routes.js";
 </script>
 
 <main>
@@ -114,7 +118,7 @@ export { routes, callbacks };
         <RouterLink name="about">About</RouterLink>
     </nav>
     <hr />
-    <RouterView />
+    <RouterView use="{routes}" />
 </main>
 ```
 
