@@ -1,7 +1,7 @@
 <script>
     import * as routes from "./routes";
-    import { RouterLink, RouterView, Router } from "svelte-routed";
-    // import { RouterLink, RouterView, Router } from "./router/index.js";
+    // import { RouterLink, RouterView, Router } from "svelte-routed";
+    import { RouterLink, RouterView, Router } from "./router/index.js";
     // Get params / meta / search / hash
     $: {
         if ($Router) {

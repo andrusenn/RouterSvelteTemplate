@@ -28,7 +28,6 @@ let routes = [
     {
         path: "*",
         component: NotFound,
-        title: "404",
     },
 ];
 let fns = {
@@ -42,4 +41,4 @@ let fns = {
         //}, 500);
     },
 };
-export { routes, fns };
+export { routes };
