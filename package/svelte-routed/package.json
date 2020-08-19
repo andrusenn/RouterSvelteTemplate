@@ -1,6 +1,6 @@
 {
     "name": "svelte-routed",
-    "version": "0.2.0-beta",
+    "version": "0.3.0-beta",
     "description": "Svelte routing",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
