@@ -18,7 +18,8 @@ class RouterClass {
         // get link path part
         this.hash = "";
         this.search = "";
-        this.title = "";
+        this.title = document.title;
+        this.titleInit = document.title;
         this.paths = [];
         this.meta = {};
         this.pathIndex = -1;
@@ -59,27 +60,30 @@ class RouterClass {
         // check params
         this.checkParams();
 
-        // Check functions
-        if (!this.hasParameters) {
-            if (this._routes[this.pathIndex]) {
+        // Check if path is registered
+        if (this._routes[this.pathIndex]) {
+            // Process request --------
+
+            // Check functions
+            if (!this.hasParameters) {
                 // If has default params
                 if (this._routes[this.pathIndex].hasOwnProperty("params")) {
                     this.params = this._routes[this.pathIndex].params;
                 }
-                this.title = this._routes[this.pathIndex].title;
             }
-        }
-
-        // meta
-        if (
-            this._routes[this.pathIndex] &&
-            this._routes[this.pathIndex].hasOwnProperty("meta")
-        ) {
-            this.meta = this._routes[this.pathIndex].meta;
-        }
-
-        // do the do
-        if (this._routes[this.pathIndex]) {
+            // Meta
+            if (this._routes[this.pathIndex].hasOwnProperty("meta")) {
+                this.meta = this._routes[this.pathIndex].meta;
+            }
+            // Title
+            if (this._routes[this.pathIndex].title) {
+                this.title = this._routes[this.pathIndex].title;
+            } else {
+                this._routes[this.pathIndex].title = document.title;
+                this.title = this.titleInit;
+            }
+            document.title = this.title;
+            // Do
             if (this._routes[this.pathIndex].hasOwnProperty("do")) {
                 this._routes[this.pathIndex].do({
                     search: this.search,
@@ -90,31 +94,34 @@ class RouterClass {
             }
             this.component = this._routes[this.pathIndex].component;
         } else {
+            // Fallback
             let fallbackIndex = this.paths.indexOf("*");
 
             if (this._routes[fallbackIndex].hasOwnProperty("do")) {
                 this._routes[fallbackIndex].do();
             }
-            this.title = this._routes[fallbackIndex].title;
+            if (this._routes[fallbackIndex].title) {
+                this.title = this._routes[fallbackIndex].title;
+            } else {
+                this._routes[fallbackIndex].title = document.title;
+                this.title = document.title;
+            }
             this.component = this._routes[fallbackIndex].component;
+            document.title = this.title;
         }
-        // Pathname
-        let pathname = document.location.pathname;
-
-        // Title
-        document.title = this.title;
-
         // Push state
-        history.pushState(
-            {
-                search: this.search,
-                hash: this.hash,
-                params: this.params,
-                meta: this.meta,
-            },
-            this.title,
-            pathname + this.search + this.hash,
-        );
+        try {
+            history.pushState(
+                {
+                    search: this.search,
+                    hash: this.hash,
+                    params: this.params,
+                    meta: this.meta,
+                },
+                this.title,
+                document.location.pathname + this.search + this.hash,
+            );
+        } catch (e) {}
 
         // Init --------------------
         if (typeof this.config.init === "function") {
@@ -198,7 +205,9 @@ class RouterClass {
             if (this._routes[this.pathIndex].hasOwnProperty("do")) {
                 this._routes[this.pathIndex].do(state);
             }
-            document.title = this._routes[this.pathIndex].title;
+            if (this._routes[this.pathIndex].title) {
+                this.title = this._routes[this.pathIndex].title;
+            }
             this.meta = state.meta;
             this.component = this._routes[this.pathIndex].component;
         } else {
@@ -208,9 +217,15 @@ class RouterClass {
                 this._routes[fallbackIndex].do();
             }
             this.component = this._routes[fallbackIndex].component;
-            document.title = this._routes[fallbackIndex].title;
+            this.title = this._routes[fallbackIndex].title;
         }
         this.config.update(this.component);
+        // Title
+        if (this.title) {
+            document.title = this.title;
+        } else {
+            document.title = this.titleInit;
+        }
     }
     getRealPathIndex() {
         let realPath = "/";
@@ -263,7 +278,7 @@ class RouterClass {
                             this._routes[indexRealPath] &&
                             this._routes[indexRealPath].hasOwnProperty("params")
                         ) {
-                            _params.push(parts[i]);
+                            _params.push(decodeURI(parts[i]));
                         }
                     }
                 }
@@ -344,7 +359,9 @@ class RouterClass {
                         meta: this.meta,
                     });
                 }
-                this.title = this._routes[this.pathIndex].title;
+                if (this._routes[this.pathIndex].title) {
+                    this.title = this._routes[this.pathIndex].title;
+                }
                 this.component = this._routes[this.pathIndex].component;
             } else {
                 let fallbackIndex = this.paths.indexOf("*");
@@ -366,8 +383,6 @@ class RouterClass {
             }
             this.component = this._routes[this.pathIndex].component;
         }
-        // Title
-        document.title = this.title;
         // Push state
         history.pushState(
             {
@@ -380,6 +395,12 @@ class RouterClass {
             this.base + this.path + this.search + this.hash,
         );
         this.config.update(this.component);
+        // Title
+        if (this.title) {
+            document.title = this.title;
+        } else {
+            document.title = this.titleInit;
+        }
     }
     // middleware
     middleware(e, a, fn, exec) {
@@ -449,8 +470,6 @@ class RouterClass {
             }
             this.component = this._routes[this.pathIndex].component;
         }
-        // Title
-        document.title = this.title;
         // Push state
         history.pushState(
             {
@@ -463,6 +482,12 @@ class RouterClass {
             this.base + this.path + this.search + this.hash,
         );
         this.config.update(this.component);
+        // Title
+        if (this.title) {
+            document.title = this.title;
+        } else {
+            document.title = this.titleInit;
+        }
     }
 }
 export default RouterClass;
