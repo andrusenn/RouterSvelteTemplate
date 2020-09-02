@@ -24,71 +24,73 @@ import About from "./views/About.svelte";
 import NotFound from "./views/NotFound.svelte";
 
 // Vars
-let routes = [
-    // Paths
-    {
-        path: "/", // required
-        name: "home", // required
-        component: Home, // required
-        title: "Home",
-    },
-    {
-        path: "/about", // required
-        name: "about", // required
-        do: function (data) {
-            // Do something
-            console.log(data);
+let routes = {
+    paths:[
+        // Paths
+        {
+            path: "/", // required
+            name: "home", // required
+            component: Home, // required
+            title: "Home",
         },
-        // Support dynamic parameters
-        // if it's defined, return valid route -> /about/param1
-        params: {
-            param1: "",
-            // if a second param is defined, return valid route -> /about/param1/param2
-            param2: "",
+        {
+            path: "/about", // required
+            name: "about", // required
+            do: function (data) {
+                // Do something
+                console.log(data);
+            },
+            // Support dynamic parameters
+            // if it's defined, return valid route -> /about/param1
+            params: {
+                param1: "",
+                // if a second param is defined, return valid route -> /about/param1/param2
+                param2: "",
+            },
+            // Add some meta data
+            meta: {
+                someparam: "foo",
+            },
+            component: About, // required
+            title: "About",
         },
-        // Add some meta data
-        meta: {
-            someparam: "foo",
+        {
+            // Fallback not found
+            path: "*",
+            component: NotFound,
+            title: "404",
         },
-        component: About, // required
-        title: "About",
-    },
-    {
-        // Fallback not found
-        path: "*",
-        component: NotFound,
-        title: "404",
-    },
-];
-// some configs an callbacks
-let fns = {
-    // Base url path
-    basePath: "",
+    ],
+    // some configs an callbacks
+    fns = {
+        // Base url path
+        basePath: "",
 
-    // On update route
-    update: (component) => {
-        //
-    },
+        // On update route
+        update: (component) => {
+            //
+        },
 
-    init: () => {
-        //
-    },
+        init: () => {
+            //
+        },
 
-    // middleware / before routing
-    before: (next) => {
-        //let to = setTimeout(() => {
-        next();
-        //clearTimeout(to);
-        //}, 500);
-    },
+        // middleware / before routing
+        before: (next) => {
+            //let to = setTimeout(() => {
+            next();
+            //clearTimeout(to);
+            //}, 500);
+        },
 
-    // After routing
-    after: () => {
-        //
+        // After routing
+        after: () => {
+            //
+        },
     },
 };
 // export
-export { routes, fns };
+export default routes;
 ```
 
 |     name | value                                                                                                         |
@@ -115,7 +117,7 @@ export { routes, fns };
     // Import components
     import { RouterLink, RouterView } from "svelte-routed";
     // Import my routes
-    import * as routes from "./routes.js";
+    import myroutes from "./routes.js";
 </script>
 
 <main>
@@ -124,21 +126,38 @@ export { routes, fns };
         <RouterLink name="about">About</RouterLink>
     </nav>
     <hr />
-    <RouterView use="{routes}" />
+    <RouterView use="{myroutes}" />
 </main>
 ```
 
 ### Availables props
 
+| Attr       | Desc                                                                 |
+| ---------- | -------------------------------------------------------------------- |
+| `name`     | The name of the route. The same one declared on `routes.js`          |
+| `part`     | If you use name, use `part` to pass search and hash `?x=0#hashvalue` |
+| `path`     | Ypu can use `path` instead of `name`                                 |
+| `title`    | The title attr of the "a" tag                                        |
+| `cssClass` | Add classes to "a" tag                                               |
+| `cssStyle` | Add styles to "a" tag                                                |
+
 ```html
+<!-- Use path -->
 <RouterLink
-    name="home"
+    path="/about?x=0#myhash"
     title="mytitle"
     cssClass="classes"
     cssStyle="styles"
+    >About</RouterLink
+>
+<!-- Use name and use part for search and hash-->
+<RouterLink
+    name="about"
     part="?x=0#myhash"
-    path="/"
-    >Home</RouterLink
+    title="mytitle"
+    cssClass="classes"
+    cssStyle="styles"
+    >About</RouterLink
 >
 ```
 
@@ -182,18 +201,38 @@ For those who want to deploy on apache server add this to the .htaccess file.
 
 ```text
 
+# In subfolder ------------
+
 <IfModule mod_rewrite.c>
-# replace basepath with yours
+# replace delete basepath with yours.
+# Take care of path slashes
+
 RewriteEngine On
 
 # remove trail slash
 RewriteRule ^(.*)/$ basePath/$1 [L,R=301]
 
-RewriteBase /
+RewriteBase /basepath/
 RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /basePath/index.html [L]
+
+</IfModule>
+
+# In root -----------------
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# remove trail slash
+RewriteRule ^(.*)/$ $1 [L,R=301]
+
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
 
 </IfModule>
 ```

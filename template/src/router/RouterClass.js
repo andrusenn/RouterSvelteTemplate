@@ -26,6 +26,11 @@ class RouterClass {
         this.path = document.location.pathname.replace(this.base, "");
         this.component = null;
 
+        // Remove trail slash
+        if (this.path !== "/") {
+            this.path = this.path.replace(/\/$/gi, "");
+        }
+
         // Capture hash
         if (document.location.hash !== "") {
             this.hash = document.location.hash;
@@ -119,7 +124,7 @@ class RouterClass {
                     meta: this.meta,
                 },
                 this.title,
-                document.location.pathname + this.search + this.hash,
+                this.path + this.search + this.hash,
             );
         } catch (e) {}
 
@@ -186,6 +191,11 @@ class RouterClass {
     }
     backTo(e) {
         this.path = document.location.pathname.replace(this.base, "");
+
+        // Remove trail slash
+        if (this.path !== "/") {
+            this.path = this.path.replace(/\/$/gi, "");
+        }
 
         // Index of path in paths
         this.pathIndex = this.getRealPathIndex();
@@ -328,6 +338,11 @@ class RouterClass {
         this.hash = new URL(this.urlBase + path).hash;
         this.path = new URL(this.urlBase + path).pathname;
 
+        // Remove trail slash
+        if (this.path !== "/") {
+            this.path = this.path.replace(/\/$/gi, "");
+        }
+
         // Index of path in paths
         this.pathIndex = this.getRealPathIndex();
 
@@ -416,6 +431,12 @@ class RouterClass {
         this.search = new URL(a.href).search;
         this.hash = new URL(a.href).hash;
         this.path = new URL(a.href).pathname;
+
+        // Remove trail slash
+        if (this.path !== "/") {
+            this.path = this.path.replace(/\/$/gi, "");
+        }
+
         this.meta = {};
         // Index of path in paths
         this.pathIndex = this.getRealPathIndex();

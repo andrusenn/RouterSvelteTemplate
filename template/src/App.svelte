@@ -1,5 +1,5 @@
 <script>
-    import * as routes from "./routes";
+    import routes from "./routes";
     // import { RouterLink, RouterView, Router } from "svelte-routed";
     import { RouterLink, RouterView, Router } from "./router/index.js";
     // Get params / meta / search / hash
@@ -25,7 +25,7 @@
         |
         <RouterLink name="about">About</RouterLink>
         |
-        <RouterLink path="/about/hello-param">About with param</RouterLink>
+        <RouterLink path="/about/hello-param/">About with param</RouterLink>
     </nav>
     <hr />
     <RouterView use={routes} />

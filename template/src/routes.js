@@ -4,41 +4,43 @@ import About from "./views/About.svelte";
 import NotFound from "./views/NotFound.svelte";
 
 // Vars
-let routes = [
-    // Paths
-    {
-        path: "/",
-        name: "home",
-        params: {
-            param1: "",
-            param2: "",
+let routes = {
+    paths: [
+        // Paths
+        {
+            path: "/",
+            name: "home",
+            params: {
+                param1: "",
+                param2: "",
+            },
+            component: Home,
+            title: "Home",
         },
-        component: Home,
-        title: "Home",
-    },
-    {
-        path: "/about",
-        name: "about",
-        params: {
-            param1: "",
+        {
+            path: "/about",
+            name: "about",
+            params: {
+                param1: "",
+            },
+            component: About,
+            title: "About",
         },
-        component: About,
-        title: "About",
-    },
-    {
-        path: "*",
-        component: NotFound,
-    },
-];
-let fns = {
-    init: () => {
-        window.scrollTo(0, 0);
-    },
-    before: (next) => {
-        //let to = setTimeout(() => {
-        next();
-        //clearTimeout(to);
-        //}, 500);
+        {
+            path: "*",
+            component: NotFound,
+        },
+    ],
+    fns: {
+        init: () => {
+            window.scrollTo(0, 0);
+        },
+        before: (next) => {
+            //let to = setTimeout(() => {
+            next();
+            //clearTimeout(to);
+            //}, 500);
+        },
     },
 };
-export { routes };
+export default routes;
