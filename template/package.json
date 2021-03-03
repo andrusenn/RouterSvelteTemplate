@@ -25,6 +25,6 @@
     },
     "dependencies": {
         "sirv-cli": "^1.0.0",
-        "svelte-routed": "file:../package/svelte-routed"
+        "svelte-routed": "^1.1.0"
     }
 }
