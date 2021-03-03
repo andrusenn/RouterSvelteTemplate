@@ -1,6 +1,6 @@
 {
     "name": "svelte-routed",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Svelte routing",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -10,10 +10,10 @@
         "dev": "rollup -c -w"
     },
     "devDependencies": {
-        "rollup": "^2.22.2",
-        "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-svelte": "^5.2.3",
-        "svelte": "^3.24.0"
+        "@rollup/plugin-node-resolve": "^11.0.0",
+        "rollup": "^2.3.4",
+        "rollup-plugin-svelte": "^7.0.0",
+        "svelte": "^3.35.0"
     },
     "peerDependencies": {
         "svelte": "3.x"
