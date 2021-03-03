@@ -25,7 +25,7 @@ import NotFound from "./views/NotFound.svelte";
 
 // Vars
 let routes = {
-    paths:[
+    paths: [
         // Paths
         {
             path: "/", // required
@@ -62,7 +62,7 @@ let routes = {
         },
     ],
     // some configs an callbacks
-    fns = {
+    fns: {
         // Base url path
         basePath: "",
 
@@ -193,6 +193,29 @@ Example:
     export let Router;
     Router.navigateTo("/about");
 </script>
+```
+
+IMPORTANT: If you are outside of a routed component, use store \$Router importing `Router`;
+
+```html
+<script>
+    // Import from global store
+    import { Router } from "svelte-routed";
+    // OnMount
+    import { onMount } from "svelte";
+
+    let somecondition = true;
+
+    onMount(() => {
+        // If some condition
+        if (somecondition) {
+            // Use $Router
+            $Router.navigateTo("/my_path");
+        }
+    });
+</script>
+
+<div>Some content</div>
 ```
 
 ### Apache server SPA
