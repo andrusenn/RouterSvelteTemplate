@@ -230,7 +230,9 @@ class RouterClass {
             this.component = this._routes[fallbackIndex].component;
             this.title = this._routes[fallbackIndex].title;
         }
-        this.config.update(this.component);
+        if (typeof this.config.update === "function") {
+            this.config.update(this.component);
+        }
         if (typeof this._update === "function") {
             this._update(this.component);
         }
@@ -413,7 +415,9 @@ class RouterClass {
             this.title,
             this.base + this.path + this.search + this.hash,
         );
-        this.config.update(this.component);
+        if (typeof this.config.update === "function") {
+            this.config.update(this.component);
+        }
         if (typeof this._update === "function") {
             this._update(this.component);
         }
@@ -509,7 +513,9 @@ class RouterClass {
             this.title,
             this.base + this.path + this.search + this.hash,
         );
-        this.config.update(this.component);
+        if (typeof this.config.update === "function") {
+            this.config.update(this.component);
+        }
         if (typeof this._update === "function") {
             this._update(this.component);
         }
