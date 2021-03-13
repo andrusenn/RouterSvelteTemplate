@@ -11,14 +11,17 @@
     let Router = null;
 
     onMount(() => {
-        routerClass = new RouterClass(use.paths, {
-            update: (c) => {
+        routerClass = new RouterClass(
+            use.paths,
+            {
+                ...use.fns,
+            },
+            (c) => {
                 component = c;
                 Router = routerClass;
                 $RouterStore = routerClass;
             },
-            ...use.fns,
-        });
+        );
         component = routerClass.component;
         Router = routerClass;
         $RouterStore = routerClass;

@@ -11,14 +11,6 @@
     }
 </script>
 
-<style>
-    :global(code) {
-        background: #eee;
-        padding: 4px 3px;
-        font-family: "Courier New", Courier, monospace;
-    }
-</style>
-
 <main>
     <nav>
         <RouterLink name="home">Home</RouterLink>
@@ -30,3 +22,11 @@
     <hr />
     <RouterView use={routes} />
 </main>
+
+<style>
+    :global(code) {
+        background: #eee;
+        padding: 4px 3px;
+        font-family: "Courier New", Courier, monospace;
+    }
+</style>

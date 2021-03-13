@@ -28,7 +28,8 @@
         {title}
         {role}
         use:start
-        router>
+        router
+    >
         <slot />
     </a>
 {/if}

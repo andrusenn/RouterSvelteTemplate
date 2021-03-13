@@ -1,5 +1,5 @@
 class RouterClass {
-    constructor(routes, _config) {
+    constructor(routes, _config, _fn = null) {
         this.config = {
             basePath: "",
             init: null,
@@ -12,6 +12,7 @@ class RouterClass {
         if (typeof routes === "undefined") {
             return false;
         }
+        this._update = _fn;
         // Base
         this.base = this.config.basePath;
         this.urlBase = document.location.origin + this.base;
@@ -230,6 +231,9 @@ class RouterClass {
             this.title = this._routes[fallbackIndex].title;
         }
         this.config.update(this.component);
+        if (typeof this._update === "function") {
+            this._update(this.component);
+        }
         // Title
         if (this.title) {
             document.title = this.title;
@@ -410,6 +414,9 @@ class RouterClass {
             this.base + this.path + this.search + this.hash,
         );
         this.config.update(this.component);
+        if (typeof this._update === "function") {
+            this._update(this.component);
+        }
         // Title
         if (this.title) {
             document.title = this.title;
@@ -503,6 +510,9 @@ class RouterClass {
             this.base + this.path + this.search + this.hash,
         );
         this.config.update(this.component);
+        if (typeof this._update === "function") {
+            this._update(this.component);
+        }
         // Title
         if (this.title) {
             document.title = this.title;
